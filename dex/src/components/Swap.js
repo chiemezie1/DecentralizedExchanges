@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import { Input, Popover, Radio, Modal, meassage } from "antd"
 import { ArrowDownOutlined, DownOutlined, SettingOutlined, } from "@ant-design/icons";
+import TokenList from "../tokenList.json"
 
 function Swap() {
   const [slippage, setSlippage] = useState(0.5);
   const [tokenOneAmount,setTokenOneAmount] = useState("");
   const [tokenTwoAmount, setTokenTwoAmount] = useState("");
+  const [tokenOne, setTokenOne] = useState(TokenList[0]);
+  const [tokenTwo, setTokenTwo] = useState(TokenList[1]);
 
   function changeAmonut(e){
     setTokenOneAmount(e.target.value)
@@ -42,8 +45,16 @@ function Swap() {
       <div className='inputs'>
         <Input placeholder='0' value={tokenOneAmount} onChange={changeAmonut} />
         <Input placeholder='0' value={tokenTwoAmount} disabled= {true} />
-        <div className='asssetOne'></div>
-        <div className='asssetTwo'></div>
+        <div className='asssetOne'>
+          <img src={tokenOne.img} alt='TokenOneLogo' className='"assetLogo'/>
+          {tokenOne.ticker}
+          <DownOutlined/>
+        </div>
+        <div className='asssetTwo'>
+        <img src={tokenTwo.img} alt='TokenOneLogo' className='"assetLogo'/>
+        {tokenTwo.ticker}
+        <DownOutlined />
+        </div>
       </div>
     </div>
   )
