@@ -33,10 +33,16 @@ function Swap() {
   }
 
   function switchToken() {
+    setPrices(null);
+    setTokenOneAmount(null);
+    setTokenTwoAmount(null);
     const one = tokenOne;
     const two = tokenTwo;
     setTokenOne(two);
     setTokenTwo(one);
+    setTokenTwo(one);
+    setTokenOne(two);
+    fatchPrices(two.address, one.address);
   }
 
   function openModal(asset) {
