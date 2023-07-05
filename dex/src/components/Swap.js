@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Input, Popover, Radio, Modal, meassage } from "antd"
 import { ArrowDownOutlined, DownOutlined, SettingOutlined, } from "@ant-design/icons";
 import TokenList from "../tokenList.json"
+import axios from "axios";
 
 function Swap() {
   const [slippage, setSlippage] = useState(0.5);
@@ -11,6 +12,12 @@ function Swap() {
   const [tokenTwo, setTokenTwo] = useState(TokenList[1]);
   const [isOpen, setIsOpen] = useState(false);
   const [changeToken, setChangeToken] = useState(1);
+  const [prices, setPrices] = useState("");
+
+  useEffect(() => {
+    fatchPrices(TokenList[0].address, TokenList[1].address);
+  }, [])
+
 
   function changeAmonut(e) {
     setTokenOneAmount(e.target.value);
@@ -41,7 +48,12 @@ function Swap() {
     }
     setIsOpen(false);
   }
-
+  async function fatchPrices(one, two){
+    const res = await axios.get(`http://localhost:3002/tokenPrice`, {
+      params: {addressOne: one, addressTwo: two}
+    })
+    setPrices(res.data)
+  }
 
   const settings = (
     <>
