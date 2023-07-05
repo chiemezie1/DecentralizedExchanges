@@ -51,11 +51,16 @@ function Swap() {
   }
 
   function modifyToken(i){
+    setPrices(null);
+    setTokenOneAmount(null);
+    setTokenTwoAmount(null);
     if(changeToken === 1){
       setTokenOne(TokenList[i]);
+      fatchPrices(TokenList[i].address, tokenTwo.address);
     }
     else{
       setTokenTwo(TokenList[i]);
+      fatchPrices(tokenOne.address, TokenList[i].address);
     }
     setIsOpen(false);
   }
