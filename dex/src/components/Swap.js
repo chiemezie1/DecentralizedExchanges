@@ -3,8 +3,13 @@ import { Input, Popover, Radio, Modal, meassage } from "antd"
 import { ArrowDownOutlined, DownOutlined, SettingOutlined, } from "@ant-design/icons";
 import TokenList from "../tokenList.json"
 import axios from "axios";
+import { useSendTransaction, useWaitForTransaction } from 'wagmi';
+import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { sendTransaction } from 'web3/lib/commonjs/eth.exports';
+
 
 function Swap() {
+  const { address, isConnected } = useAccount()
   const [slippage, setSlippage] = useState(0.5);
   const [tokenOneAmount, setTokenOneAmount] = useState(null);
   const [tokenTwoAmount, setTokenTwoAmount] = useState(null);
@@ -13,6 +18,20 @@ function Swap() {
   const [isOpen, setIsOpen] = useState(false);
   const [changeToken, setChangeToken] = useState(1);
   const [prices, setPrices] = useState("");
+
+  const [transDetails, setTransDetails] = useState({
+    to: null,
+    data: null,
+    value: null,
+  });
+  const { data, SendTransaction } = useSendTransaction({
+    request: {
+      from: address,
+      to: String(transDetails.to),
+      data: String(transDetails.data),
+      value: String(transDetails.value),
+    }
+  })
 
   useEffect(() => {
     fatchPrices(TokenList[0].address, TokenList[1].address);
@@ -64,12 +83,25 @@ function Swap() {
     }
     setIsOpen(false);
   }
+
+
+  async function fetchDexSwap(){
+    
+  }
+
   async function fatchPrices(one, two) {
     const res = await axios.get(`http://localhost:3002/tokenPrice`, {
       params: { addressOne: one, addressTwo: two }
     })
-    setPrices(res.data)
+    setPrices(res.data);
   }
+
+  useEffect(() => {
+    if (transDetails.to && isConnected) {
+      sendTransaction();
+    }
+
+  }, [transDetails]);
 
   const settings = (
     <>
@@ -136,7 +168,7 @@ function Swap() {
             <DownOutlined />
           </div>
         </div>
-        <div className='swapButton' disabled={!tokenOneAmount}>Swap</div>
+        <div className='swapButton' disabled={!tokenOneAmount || isConnected}>Swap</div>
       </div>
     </>
   )
