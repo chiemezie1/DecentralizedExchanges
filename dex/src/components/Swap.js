@@ -19,19 +19,19 @@ function Swap() {
   const [changeToken, setChangeToken] = useState(1);
   const [prices, setPrices] = useState("");
 
-  const [transDetails, setTransDetails] = useState({
-    to: null,
-    data: null,
-    value: null,
-  });
-  const { data, SendTransaction } = useSendTransaction({
-    request: {
-      from: address,
-      to: String(transDetails.to),
-      data: String(transDetails.data),
-      value: String(transDetails.value),
-    }
-  })
+  // const [transDetails, setTransDetails] = useState({
+  //   to: null,
+  //   data: null,
+  //   value: null,
+  // });
+  // const { data, SendTransaction } = useSendTransaction({
+  //   request: {
+  //     from: address,
+  //     to: String(transDetails.to),
+  //     data: String(transDetails.data),
+  //     value: String(transDetails.value),
+  //   }
+  // })
 
   useEffect(() => {
     fatchPrices(TokenList[0].address, TokenList[1].address);
@@ -96,12 +96,12 @@ function Swap() {
     setPrices(res.data);
   }
 
-  useEffect(() => {
-    if (transDetails.to && isConnected) {
-      sendTransaction();
-    }
+  // useEffect(() => {
+  //   if (transDetails.to && isConnected) {
+  //     sendTransaction();
+  //   }
 
-  }, [transDetails]);
+  // }, [transDetails]);
 
   const settings = (
     <>
